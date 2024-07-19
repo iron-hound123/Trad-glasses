@@ -1,2 +1,2 @@
 # Trad-glasses
-It's a repository for a project that I'm doing with some friends for a competition.
+Trad-glasses is an innovative solution that facilitates communication between deaf and mute people and those who do not speak sign language. This repository contains the source code, development history, and supporting materials for the YoungSolver group.
