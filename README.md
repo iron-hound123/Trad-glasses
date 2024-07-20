@@ -24,3 +24,4 @@ YoungSlover use the integration of AI model to different services (GPT) To turn 
 Install library :
 - pip install mediapipe
 - pip install opencv-python
+- pip install numpy
