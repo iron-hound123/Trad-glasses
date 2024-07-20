@@ -20,3 +20,7 @@ YoungSlover use the integration of AI model to different services (GPT) To turn 
 - Combine generative AI with output text to generate a better translation of sign language
 - Generate sound from text
 
+## How to install
+Install library :
+- pip install mediapipe
+- pip install opencv-python
