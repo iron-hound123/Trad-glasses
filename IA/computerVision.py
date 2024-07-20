@@ -1,5 +1,6 @@
 import cv2
 import mediapipe as mp
+import numpy as np
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_holistic = mp.solutions.holistic
@@ -36,6 +37,13 @@ def draw_landmarks(image,results):
         image,
         results.left_hand_landmarks,
         mp_holistic.HAND_CONNECTIONS,)
+
+def extract_keypoints(results):
+  face=np.array([[res.x,res.y,res.z] for res in results.face_landmarks.landmark]).flatten() if results.face_landmarks else np.zeros(1404)
+  pose=np.array([[res.x,res.y,res.z,res.visibility] for res in results.pose_landmarks.landmark]).flatten() if results.pose_landmarks else np.zeros(132)
+  left_hand=np.array([[res.x,res.y,res.z] for res in results.left_hand_landmarks.landmark]).flatten() if results.left_hand_landmarks else np.zeros(21*3)
+  right_hand=np.array([[res.x,res.y,res.z] for res in results.right_hand_landmarks.landmark]).flatten() if results.right_hand_landmarks else np.zeros(21*3)
+  return np.concatenate([face,pose,left_hand,right_hand]) 
 cap = cv2.VideoCapture(0)
 
 first=True
@@ -56,7 +64,8 @@ with mp_holistic.Holistic(
     image,results = mediapipe_detection(image,holistic)
     
     draw_landmarks(image,results)
-    
+    rh=extract_keypoints(results)
+    print(rh.shape)
     
     # Flip the image horizontally for a selfie-view display.
     cv2.imshow('Trad-glasses', cv2.flip(image, 1))
