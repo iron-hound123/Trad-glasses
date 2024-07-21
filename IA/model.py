@@ -1,6 +1,7 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.callbacks import TensorBoard
+import os
 from sklearn.metrics import multilabel_confusion_matrix, accuracy_score
 log_dir = os.path.join('Logs')
 tb_callback = TensorBoard(log_dir=log_dir)

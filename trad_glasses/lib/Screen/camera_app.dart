@@ -1,9 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:tflite/tflite.dart';
+
+typedef void Callback(List<dynamic> list, int h, int w);
 
 class CameraApp extends StatefulWidget {
-  const CameraApp({super.key, required this.cameras});
+  const CameraApp({super.key, required this.cameras, required this.model});
   final List<CameraDescription> cameras;
+  final String model;
   @override
   State<CameraApp> createState() => _CameraAppState();
 }
@@ -11,15 +15,30 @@ class CameraApp extends StatefulWidget {
 class _CameraAppState extends State<CameraApp> {
   late CameraController controller;
 
+  Future<void> loadModel() async {
+    //Load our model
+    /*
+    String? res = await Tflite.loadModel(
+      model: "assets/model.tflite",
+      labels: "assets/labels.txt",
+    );
+    print(res);*/
+  }
+
   @override
   void initState() {
     super.initState();
+    loadModel();
     controller = CameraController(widget.cameras[0], ResolutionPreset.max);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
       setState(() {});
+      controller.startImageStream((CameraImage img) {
+        
+        //Use our model
+      });
     }).catchError((Object e) {
       if (e is CameraException) {
         switch (e.code) {
@@ -67,7 +86,7 @@ class _CameraAppState extends State<CameraApp> {
       return Container();
     }
     return MaterialApp(
-      home: CameraPreview(controller),
+      home: SafeArea(child: CameraPreview(controller)),
     );
   }
 }
